@@ -14,6 +14,7 @@ async function bootstrap() {
     origin: ['http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   });
+  app.setGlobalPrefix('api');
   console.log('running on port ', process.env.PORT);
   await app.listen(process.env.PORT ?? 3000);
 }
