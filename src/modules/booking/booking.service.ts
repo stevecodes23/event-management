@@ -127,4 +127,34 @@ export class BookingService {
       return { message: 'Ticket booked successfully' };
     }
   }
+  async getUserBookings(userId: number) {
+    return await this.bookingRepository.find({
+      where: { user: { id: userId } },
+      relations: ['ticket', 'ticket.event', 'ticket.event.venue'],
+      select: {
+        id: true,
+        quantity: true,
+        totalPrice: true,
+        paymentStatus: true,
+        ticket: {
+          id: true,
+          type: true,
+          price: true,
+          event: {
+            id: true,
+            title: true,
+            date: true,
+            startTime: true,
+            endTime: true,
+            venue: {
+              id: true,
+              address: true,
+              city: true,
+              state: true,
+            },
+          },
+        },
+      },
+    });
+  }
 }

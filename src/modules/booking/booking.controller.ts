@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { GetUser } from 'src/decorator/get-user.decorator';
 import { BookTicketDto, BookTicketWithPGDto } from './dto/book-ticket.dto';
@@ -10,14 +10,14 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
   @ApiBearerAuth()
-  @Roles(UserRole.ADMIN, UserRole.ORGANISER)
+  @Roles(UserRole.ADMIN, UserRole.ORGANISER, UserRole.USER)
   @Post('book-ticket')
   async bookTicket(@GetUser('id') userId: number, @Body() body: BookTicketDto) {
     const { ticketId, quantity } = body;
     return await this.bookingService.bookTicket(userId, ticketId, quantity);
   }
   @ApiBearerAuth()
-  @Roles(UserRole.ADMIN, UserRole.ORGANISER)
+  @Roles(UserRole.ADMIN, UserRole.ORGANISER, UserRole.USER)
   @Post('book-ticket-with_payment-gateway')
   async bookTicketwithgateway(
     @GetUser('id') userId: number,
@@ -30,5 +30,11 @@ export class BookingController {
       quantity,
       paymentToken,
     );
+  }
+  @ApiBearerAuth()
+  @Roles(UserRole.ADMIN, UserRole.ORGANISER, UserRole.USER)
+  @Get('my-bookings')
+  async getUserBookings(@GetUser('id') userId: number) {
+    return this.bookingService.getUserBookings(userId);
   }
 }
