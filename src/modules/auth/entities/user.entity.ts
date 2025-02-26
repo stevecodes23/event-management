@@ -1,5 +1,6 @@
+import { Venue } from 'src/modules/venue/entities/veneu.entity';
 import { BaseEntity } from 'src/universal/base.entity';
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 export enum UserRole {
   ADMIN = 'Admin',
   USER = 'User',
@@ -19,4 +20,10 @@ export class User extends BaseEntity {
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
   role: UserRole;
+
+  @OneToMany(() => Venue, (venue) => venue.addedBy)
+  venuesAdded: Venue[];
+
+  @OneToMany(() => Venue, (venue) => venue.deletedBy)
+  venuesDeleted: Venue[];
 }
