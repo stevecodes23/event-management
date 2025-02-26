@@ -3,6 +3,10 @@ import { PartialType } from '@nestjs/mapped-types';
 export class CreateVenueDto {
   @IsString()
   @MaxLength(255)
+  name: string;
+  
+  @IsString()
+  @MaxLength(255)
   address: string;
 
   @IsString()

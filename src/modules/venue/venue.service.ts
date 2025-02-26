@@ -47,9 +47,22 @@ export class VenueService {
     await this.venueRepository.save(venue);
     await this.venueRepository.softDelete(id);
   }
-  async update(id: number, updateVenueDto: UpdateVenueDto): Promise<Venue> {
-    await this.findOne(id);
+  async update(
+    id: number,
+    updateVenueDto: UpdateVenueDto,
+  ): Promise<Venue | null> {
+    await this.venueRepository.findOne({ where: { id } });
+    if (!updateVenueDto) return null;
     await this.venueRepository.update(id, updateVenueDto);
-    return this.findOne(id);
+    return await this.venueRepository.findOne({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        city: true,
+        capacity: true,
+      },
+    });
   }
 }

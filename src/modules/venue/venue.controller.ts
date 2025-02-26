@@ -30,12 +30,15 @@ export class VenueController {
   async findOne(@Param('id') id: number) {
     return await this.venueService.findOne(id);
   }
+  @ApiBearerAuth()
   @Roles(UserRole.ADMIN)
+
   @Delete(':id')
   async remove(@Param('id') id: number, @GetUser('id') userId:number) {
     return await this.venueService.remove(id, userId);
   }
   @Roles(UserRole.ADMIN, UserRole.ORGANISER)
+  @ApiBearerAuth()
   @Put(':id')
   async update(
     @Param('id') id: number,
