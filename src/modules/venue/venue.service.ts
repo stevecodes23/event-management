@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../auth/entities/user.entity';
 import { Venue } from './entities/veneu.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { CreateVenueDto } from './dto/veneu.dto';
 
 @Injectable()
@@ -22,5 +22,22 @@ export class VenueService {
       addedBy: user,
     });
     return await this.venueRepository.save(venue);
+  }
+  async findAll(): Promise<Venue[]> {
+    return await this.venueRepository.find({
+      where: { deletedAt: IsNull() },
+      relations: ['addedBy', 'deletedBy'],
+    });
+  }
+
+  async findOne(id: number): Promise<Venue> {
+    const venue = await this.venueRepository.findOne({
+      where: { id, deletedAt: IsNull() },
+      relations: ['addedBy', 'deletedBy'],
+    });
+    if (!venue) {
+      throw new NotFoundException(`Venue with ID ${id} not found`);
+    }
+    return venue;
   }
 }
