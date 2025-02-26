@@ -3,7 +3,7 @@ import { User } from '../auth/entities/user.entity';
 import { Venue } from './entities/veneu.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
-import { CreateVenueDto } from './dto/veneu.dto';
+import { CreateVenueDto, UpdateVenueDto } from './dto/veneu.dto';
 
 @Injectable()
 export class VenueService {
@@ -48,5 +48,10 @@ export class VenueService {
     venue.deletedBy = user;
     await this.venueRepository.save(venue);
     await this.venueRepository.softDelete(id);
+  }
+  async update(id: number, updateVenueDto: UpdateVenueDto): Promise<Venue> {
+    await this.findOne(id);
+    await this.venueRepository.update(id, updateVenueDto);
+    return this.findOne(id);
   }
 }
