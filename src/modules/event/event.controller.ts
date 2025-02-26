@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Delete,
+} from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UserRole } from '../auth/entities/user.entity';
@@ -39,5 +47,11 @@ export class EventController {
   @Get(':id')
   async findOne(@Param('id') id: number) {
     return await this.eventService.findOne(id);
+  }
+  @ApiBearerAuth()
+  @Roles(UserRole.ADMIN, UserRole.ORGANISER)
+  @Delete(':id')
+  async remove(@Param('id') id: number, @GetUser('id') userId: number) {
+    return await this.eventService.remove(id, userId);
   }
 }

@@ -1,4 +1,9 @@
-import { ForbiddenException, HttpException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Venue } from '../venue/entities/veneu.entity';
 import { User } from '../auth/entities/user.entity';
@@ -147,5 +152,21 @@ export class EventService {
     });
     if (!event) throw new NotFoundException(`Event with ID ${id} not found`);
     return event;
+  }
+  async remove(id: number, userId: number) {
+    const event = await this.eventRepository.findOne({
+      where: { id },
+      relations: ['organiser'],
+    });
+    if (!event) throw new NotFoundException(`Event with ID ${id} not found`);
+
+    if (event.organiser.id !== userId) {
+      throw new ForbiddenException('You are not allowed to delete this event.');
+    }
+
+    event.deletedAt = new Date();
+    const deleteEvent = await this.eventRepository.save(event);
+    const { organiser: _, ...restOfDeletedEvent } = deleteEvent;
+    return restOfDeletedEvent;
   }
 }
