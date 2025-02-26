@@ -3,8 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { generateHash } from 'src/utils/app.utils';
+import { compareHash, generateHash } from 'src/utils/app.utils';
 import { SignUpDto } from './dto/signup.dto';
+import { ENV } from 'src/constants/env.constant';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +20,36 @@ export class AuthService {
       await this.userRepository.save(signUpDto);
 
       return {};
+    } catch (error) {
+      if (error.status)
+        throw new HttpException(error.message, error.getStatus());
+      else
+        throw new HttpException(
+          error.message,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+  async login(loginDto: LoginDto) {
+    try {
+      const { email, password } = loginDto;
+      const user = await this.userRepository.findOne({
+        where: { email: email },
+      });
+      if (!user)
+        throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+      const passwordValid = await compareHash(password, user.password);
+      if (!passwordValid)
+        throw new HttpException('Incorrect Password', HttpStatus.UNAUTHORIZED);
+      const jwtPayload = {
+        sub: user.id,
+        type: user.role,
+      };
+      const accessToken = await this.jwtService.signAsync(jwtPayload, {
+        secret: ENV.JWT.SECRET,
+        expiresIn: ENV.JWT.EXPIRY,
+      });
+      return { accessToken };
     } catch (error) {
       if (error.status)
         throw new HttpException(error.message, error.getStatus());

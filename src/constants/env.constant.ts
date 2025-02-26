@@ -19,4 +19,8 @@ export const ENV = {
     PASSWORD: getEnvVariable('DB_PASSWORD'),
     DATABASE: getEnvVariable('DB_DATABASE'),
   },
+  JWT: {
+    EXPIRY: getEnvVariable('JWT_EXPIRY'),
+    SECRET: getEnvVariable('JWT_AUTHSECRET'),
+  },
 };
