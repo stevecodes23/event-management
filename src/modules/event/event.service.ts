@@ -1,10 +1,10 @@
-import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Venue } from '../venue/entities/veneu.entity';
 import { User } from '../auth/entities/user.entity';
 import { EventTicket } from './entities/event-ticket.entity';
 import { Event } from './entities/event.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 
@@ -80,5 +80,72 @@ export class EventService {
     const updated_event = await this.eventRepository.save(event);
     const { organiser: _, ...result } = updated_event;
     return result;
+  }
+  async findAll() {
+    return await this.eventRepository.find({
+      where: {
+        deletedAt: IsNull(),
+      },
+      relations: ['venue', 'organiser'],
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        date: true,
+        startTime: true,
+        endTime: true,
+        venue: {
+          id: true,
+          address: true,
+          city: true,
+          state: true,
+          capacity: true,
+        },
+        organiser: {
+          name: true,
+        },
+        tickets: {
+          type: true,
+          price: true,
+          totalQuantity: true,
+          soldQuantity: true,
+          reservedQuantity: true,
+        },
+      },
+    });
+  }
+
+  async findOne(id: number) {
+    const event = await this.eventRepository.findOne({
+      where: { id, deletedAt: IsNull() },
+      relations: ['venue', 'organiser'],
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        date: true,
+        startTime: true,
+        endTime: true,
+        venue: {
+          id: true,
+          address: true,
+          city: true,
+          state: true,
+          capacity: true,
+        },
+        organiser: {
+          name: true,
+        },
+        tickets: {
+          type: true,
+          price: true,
+          totalQuantity: true,
+          soldQuantity: true,
+          reservedQuantity: true,
+        },
+      },
+    });
+    if (!event) throw new NotFoundException(`Event with ID ${id} not found`);
+    return event;
   }
 }
