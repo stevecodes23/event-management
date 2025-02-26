@@ -1,6 +1,7 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { BaseEntity } from 'src/universal/base.entity';
 import { User } from 'src/modules/auth/entities/user.entity';
+import { Event } from 'src/modules/event/entities/event.entity';
 
 @Entity()
 export class Venue extends BaseEntity {
