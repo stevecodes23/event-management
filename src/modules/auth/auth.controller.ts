@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
-
+import { UserRole } from './entities/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -22,3 +22,4 @@ export class AuthController {
     return this.authService.resetPassword(req.user.sub, resetPasswordDto);
   }
 }
+
