@@ -3,6 +3,7 @@ import { Event } from 'src/modules/event/entities/event.entity';
 
 import { BaseEntity } from 'src/universal/base.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
+import { Booking } from 'src/modules/booking/entities/booking.entity';
 export enum UserRole {
   ADMIN = 'Admin',
   USER = 'User',
@@ -31,4 +32,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Event, (event) => event.organiser)
   organizedEvents: Event[];
+
+  @OneToMany(() => Booking, (booking) => booking.user)
+  bookings: Booking[];
 }

@@ -6,6 +6,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Event } from './event.entity';
+import { Booking } from 'src/modules/booking/entities/booking.entity';
 
 export enum TicketType {
   VIP = 'VIP',
@@ -36,4 +37,6 @@ export class EventTicket {
   @ManyToOne(() => Event, (event) => event.tickets, { onDelete: 'CASCADE' })
   event: Event;
 
+  @OneToMany(() => Booking, (booking) => booking.ticket)
+  bookings: Booking[];
 }
