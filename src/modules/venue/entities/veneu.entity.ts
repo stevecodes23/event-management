@@ -25,4 +25,7 @@ export class Venue extends BaseEntity {
   @ManyToOne(() => User, (user) => user.venuesDeleted, { nullable: true })
   deletedBy: User;
 
+  @ManyToOne(() => Event, (event) => event.venue)
+  events: Event[];
+
 }

@@ -1,4 +1,6 @@
 import { Venue } from 'src/modules/venue/entities/veneu.entity';
+import { Event } from 'src/modules/event/entities/event.entity';
+
 import { BaseEntity } from 'src/universal/base.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
 export enum UserRole {
@@ -26,4 +28,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Venue, (venue) => venue.deletedBy)
   venuesDeleted: Venue[];
+
+  @OneToMany(() => Event, (event) => event.organiser)
+  organizedEvents: Event[];
 }
