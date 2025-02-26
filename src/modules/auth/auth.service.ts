@@ -7,6 +7,7 @@ import { compareHash, generateHash } from 'src/utils/app.utils';
 import { SignUpDto } from './dto/signup.dto';
 import { ENV } from 'src/constants/env.constant';
 import { LoginDto } from './dto/login.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -50,6 +51,34 @@ export class AuthService {
         expiresIn: ENV.JWT.EXPIRY,
       });
       return { accessToken };
+    } catch (error) {
+      if (error.status)
+        throw new HttpException(error.message, error.getStatus());
+      else
+        throw new HttpException(
+          error.message,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+  async resetPassword(id: number, resetPasswordDto: ResetPasswordDto) {
+    try {
+      const userToUpdate = await this.userRepository.findOne({
+        where: { id: Number(id) },
+      });
+      if (!userToUpdate)
+        throw new HttpException('User Does Not Exist', HttpStatus.NOT_FOUND);
+      const passwordValid = await compareHash(
+        resetPasswordDto.previousPassword,
+        userToUpdate.password,
+      );
+      if (!passwordValid)
+        throw new HttpException('Incorrect Password', HttpStatus.UNAUTHORIZED);
+      const password = await generateHash(resetPasswordDto.currentPassword);
+      await this.userRepository.update(id, {
+        password: password,
+      });
+      return {};
     } catch (error) {
       if (error.status)
         throw new HttpException(error.message, error.getStatus());
