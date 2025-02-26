@@ -1,15 +1,15 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { config } from 'dotenv';
 config({ path: '.env' });
-function getEnvVariable(name: string) {
+
+function getEnvVariable(name) {
   const envVar = process.env[name];
-  console.log('reaching here :', envVar);
-  if (!envVar) {
+  console.log(`env variable ${name}`, envVar);
+  if (!envVar)
     throw new HttpException(
-      `Environment variable ${name} not found`,
+      `No Such Env:${name} variable`,
       HttpStatus.FAILED_DEPENDENCY,
     );
-  }
   return envVar;
 }
 export const ENV = {
