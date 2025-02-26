@@ -67,8 +67,8 @@ export class EventService {
     );
 
     await this.eventTicketRepository.save(tickets);
-
-    return savedEvent;
+    const { organiser: _, ...result } = savedEvent;
+    return result;
   }
   async update(id: number, updateEventDto: UpdateEventDto, userId: number) {
     const event = await this.eventRepository.findOne({ where: { id } });
@@ -77,6 +77,8 @@ export class EventService {
       throw new ForbiddenException('You are not allowed to update this event.');
     }
     Object.assign(event, updateEventDto);
-    return await this.eventRepository.save(event);
+    const updated_event = await this.eventRepository.save(event);
+    const { organiser: _, ...result } = updated_event;
+    return result;
   }
 }
