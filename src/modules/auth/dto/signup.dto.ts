@@ -20,7 +20,7 @@ export class SignUpDto {
   @IsEmail()
   email: string;
 
-  @IsOptional()
-  @IsEnum(UserRole)
-  type: UserRole;
+  // @IsOptional()
+  // @IsEnum(UserRole)
+  // type: UserRole;
 }
