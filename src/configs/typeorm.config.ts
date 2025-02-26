@@ -3,7 +3,7 @@ import { ENV } from 'src/constants/env.constant';
 
 export const TYPEORM_CONFIG: TypeOrmModuleOptions = {
   type: 'postgres',
-  host: process.env.DB_PORT,
+  host: ENV.PSQL.HOST,
   port: ENV.PSQL.PORT,
   username: ENV.PSQL.USERNAME,
   password: ENV.PSQL.PASSWORD,
