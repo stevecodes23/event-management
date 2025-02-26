@@ -1,4 +1,6 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { config } from 'dotenv';
+config({ path: '.env' });
 function getEnvVariable(name: string) {
   const envVar = process.env[name];
   console.log('reaching here :', envVar);
