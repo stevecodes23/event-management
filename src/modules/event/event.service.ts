@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Venue } from '../venue/entities/veneu.entity';
 import { User } from '../auth/entities/user.entity';
@@ -6,6 +6,7 @@ import { EventTicket } from './entities/event-ticket.entity';
 import { Event } from './entities/event.entity';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
+import { UpdateEventDto } from './dto/update-event.dto';
 
 @Injectable()
 export class EventService {
@@ -68,5 +69,14 @@ export class EventService {
     await this.eventTicketRepository.save(tickets);
 
     return savedEvent;
+  }
+  async update(id: number, updateEventDto: UpdateEventDto, userId: number) {
+    const event = await this.eventRepository.findOne({ where: { id } });
+    if (!event) throw new HttpException(`Event with ID ${id} not found`, 404);
+    if (event.organiser.id !== userId) {
+      throw new ForbiddenException('You are not allowed to update this event.');
+    }
+    Object.assign(event, updateEventDto);
+    return await this.eventRepository.save(event);
   }
 }
