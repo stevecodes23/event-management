@@ -11,7 +11,9 @@ import { User } from '../auth/entities/user.entity';
 import Stripe from 'stripe';
 import { ConfigService } from '@nestjs/config';
 import { ENV } from 'src/constants/env.constant';
-
+import * as ejs from 'ejs';
+import * as puppeteer from 'puppeteer';
+import * as path from 'path';
 @Injectable()
 export class BookingService {
   private stripe: Stripe;
@@ -156,5 +158,34 @@ export class BookingService {
         },
       },
     });
+  }
+
+  async generateTicket(userId: number, bookingId: number): Promise<Buffer> {
+    const booking = await this.bookingRepository.findOne({
+      where: { id: bookingId, user: { id: userId } },
+      relations: ['user', 'ticket', 'ticket.event', 'ticket.event.venue'],
+    });
+
+    if (!booking) {
+      throw new NotFoundException('Booking not found.');
+    }
+
+    const templatePath = path.join(
+      __dirname,
+      '../../../template/ticket-template.ejs',
+    );
+    const html = await ejs.renderFile(templatePath, {
+      booking,
+      ticket: booking.ticket,
+      event: booking.ticket.event,
+      user: booking.user,
+    });
+
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(html);
+    const pdfBuffer = Buffer.from(await page.pdf({ format: 'A4' }));
+    await browser.close();
+    return pdfBuffer;
   }
 }

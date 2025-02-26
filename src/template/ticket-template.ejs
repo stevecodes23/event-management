@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .ticket {
+            border: 2px dashed #333;
+            padding: 20px;
+            width: 60%;
+            margin: auto;
+            background: #f9f9f9;
+        }
+        h2 {
+            color: #444;
+        }
+        .details {
+            margin-top: 15px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket">
+        <h2>🎟 Event Ticket</h2>
+        <p><strong>Event:</strong> <%= event.title %></p>
+        <p><strong>Date:</strong> <%= event.date %> at <%= event.startTime %></p>
+        <p><strong>Venue:</strong> <%= event.venue.address %>, <%= event.venue.city %></p>
+        <p><strong>Ticket Type:</strong> <%= ticket.type %></p>
+        <p><strong>Quantity:</strong> <%= booking.quantity %></p>
+        <p><strong>Total Price:</strong> $<%= booking.totalPrice %></p>
+        <p><strong>Payment Status:</strong> <%= booking.paymentStatus %></p>
+        <p><strong>Booked By:</strong> <%= user.name %></p>
+    </div>
+</body>
+</html>

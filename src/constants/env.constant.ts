@@ -25,4 +25,7 @@ export const ENV = {
     EXPIRY: getEnvVariable('JWT_EXPIRY'),
     SECRET: getEnvVariable('JWT_AUTHSECRET'),
   },
+  STRIPE: {
+    KEY: getEnvVariable('STRIPE_KEY'),
+  },
 };
