@@ -43,7 +43,7 @@ export class AuthService {
       if (!passwordValid)
         throw new HttpException('Incorrect Password', HttpStatus.UNAUTHORIZED);
       const jwtPayload = {
-        sub: user.id,
+        id: user.id,
         type: user.role,
       };
       const accessToken = await this.jwtService.signAsync(jwtPayload, {

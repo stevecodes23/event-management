@@ -8,10 +8,11 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthenticationGuard } from 'src/gaurds/authentication.gaurd';
 import { RolesGuard } from 'src/gaurds/roles.gaurd';
+import { Venue } from '../venue/entities/veneu.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Venue]),
     JwtModule.register({
       secret: ENV.JWT.SECRET,
       signOptions: { expiresIn: ENV.JWT.EXPIRY },
