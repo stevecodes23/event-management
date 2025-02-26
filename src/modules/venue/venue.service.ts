@@ -26,14 +26,12 @@ export class VenueService {
   async findAll(): Promise<Venue[]> {
     return await this.venueRepository.find({
       where: { deletedAt: IsNull() },
-      relations: ['addedBy', 'deletedBy'],
     });
   }
 
   async findOne(id: number): Promise<Venue> {
     const venue = await this.venueRepository.findOne({
       where: { id, deletedAt: IsNull() },
-      relations: ['addedBy', 'deletedBy'],
     });
     if (!venue) {
       throw new NotFoundException(`Venue with ID ${id} not found`);
