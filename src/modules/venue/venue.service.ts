@@ -40,4 +40,13 @@ export class VenueService {
     }
     return venue;
   }
+  async remove(id: number, userId: number): Promise<void> {
+    const venue = await this.findOne(id);
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) throw new NotFoundException(`User with ID ${userId} not found`);
+
+    venue.deletedBy = user;
+    await this.venueRepository.save(venue);
+    await this.venueRepository.softDelete(id);
+  }
 }

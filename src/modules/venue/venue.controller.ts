@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Req } from '@nestjs/common';
 import { VenueService } from './venue.service';
 import { UserRole } from '../auth/entities/user.entity';
 import { Roles } from 'src/decorator/roles.decorator';
@@ -23,11 +23,16 @@ export class VenueController {
   @Public()
   @Get()
   async findAll() {
-    return this.venueService.findAll();
+    return await this.venueService.findAll();
   }
   @Public()
   @Get(':id')
   async findOne(@Param('id') id: number) {
-    return this.venueService.findOne(id);
+    return await this.venueService.findOne(id);
+  }
+  @Roles(UserRole.ADMIN)
+  @Delete(':id')
+  async remove(@Param('id') id: number, @GetUser('id') userId:number) {
+    return await this.venueService.remove(id, userId);
   }
 }
