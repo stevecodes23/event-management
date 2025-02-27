@@ -16,7 +16,7 @@ import * as puppeteer from 'puppeteer';
 import * as path from 'path';
 @Injectable()
 export class BookingService {
-  private stripe: Stripe;
+  private stripe: Stripe | null = null;
 
   constructor(
     @InjectRepository(Booking)
@@ -27,12 +27,16 @@ export class BookingService {
     private readonly userRepository: Repository<User>,
     private configService: ConfigService,
   ) {
-    this.stripe = new Stripe(
-      this.configService.get<string>(ENV.STRIPE.KEY) || '',
-      {
-        apiVersion: '2025-02-24.acacia',
-      },
-    );
+    const stripeKey = this.configService.get<string>(ENV.STRIPE.KEY);
+
+    if (!stripeKey) {
+      console.warn('⚠️ STRIPE_KEY is missing. Stripe is disabled.');
+      return;
+    }
+
+    this.stripe = new Stripe(stripeKey, {
+      apiVersion: '2025-02-24.acacia',
+    });
   }
   async bookTicket(userId: number, ticketId: number, quantity: number) {
     const ticket = await this.eventTicketRepository.findOne({
@@ -100,14 +104,14 @@ export class BookingService {
 
     const totalAmount = ticket.price * quantity;
 
-    const payment = await this.stripe.charges.create({
+    const payment = await this.stripe?.charges.create({
       amount: totalAmount,
       currency: 'inr',
       source: paymentToken,
       description: `Payment for ${quantity} tickets to ${ticket.event.title}`,
     });
 
-    if (!payment.paid) {
+    if (!payment?.paid) {
       await this.saveBookingData(
         ticket,
         PaymentStatus.FAILED,
