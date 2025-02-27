@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { CreateNotification } from './dto/create-notification.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -19,8 +19,16 @@ export class NotificationController {
       body.message,
     );
   }
+  @ApiBearerAuth()
+  @Roles(UserRole.USER, UserRole.ORGANISER)
   @Get()
   async getUserNotifications(@GetUser('id') userId: number) {
     return this.notificationService.getUserNotifications(userId);
+  }
+  @ApiBearerAuth()
+  @Roles(UserRole.USER, UserRole.ORGANISER)
+  @Post(':id/read')
+  async markAsRead(@Param('id') id: number, @GetUser('id') userId: number) {
+    return this.notificationService.markAsRead(id, userId);
   }
 }

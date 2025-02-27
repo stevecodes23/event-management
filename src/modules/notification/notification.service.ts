@@ -26,9 +26,17 @@ export class NotificationService {
     return await this.notificationRepository.save(notification);
   }
   async getUserNotifications(userId: number) {
-    return this.notificationRepository.find({
+    return await this.notificationRepository.find({
       where: { user: { id: userId } },
       order: { createdAt: 'DESC' },
     });
+  }
+  async markAsRead(id: number, userId: number) {
+    const notification = await this.notificationRepository.findOne({
+      where: { id, user: { id: userId } },
+    });
+    if (!notification)
+      throw new NotFoundException(`Notification with ID ${id} not found`);
+    return await this.notificationRepository.update(id, { isRead: true });
   }
 }
