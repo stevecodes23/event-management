@@ -10,10 +10,11 @@ import { AuthenticationGuard } from 'src/gaurds/authentication.gaurd';
 import { RolesGuard } from 'src/gaurds/roles.gaurd';
 import { Venue } from '../venue/entities/veneu.entity';
 import { NotificationService } from '../notification/notification.service';
+import { Notification } from '../notification/entities/notification.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Venue]),
+    TypeOrmModule.forFeature([User, Venue, Notification]),
     JwtModule.register({
       secret: ENV.JWT.SECRET,
       signOptions: { expiresIn: ENV.JWT.EXPIRY },
