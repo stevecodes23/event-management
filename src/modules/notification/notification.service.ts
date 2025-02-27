@@ -25,4 +25,10 @@ export class NotificationService {
     });
     return await this.notificationRepository.save(notification);
   }
+  async getUserNotifications(userId: number) {
+    return this.notificationRepository.find({
+      where: { user: { id: userId } },
+      order: { createdAt: 'DESC' },
+    });
+  }
 }
