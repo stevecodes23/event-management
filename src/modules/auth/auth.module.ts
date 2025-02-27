@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthenticationGuard } from 'src/gaurds/authentication.gaurd';
 import { RolesGuard } from 'src/gaurds/roles.gaurd';
 import { Venue } from '../venue/entities/veneu.entity';
+import { NotificationService } from '../notification/notification.service';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { Venue } from '../venue/entities/veneu.entity';
   providers: [
     AuthService,
     JwtService,
+    NotificationService,
     {
       provide: APP_GUARD,
       useClass: AuthenticationGuard,
