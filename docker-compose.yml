@@ -12,6 +12,27 @@ services:
       - postgres-db:/var/lib/postgresql/data
     ports:
       - '5000:5432'
+    networks:
+      - event_network
+  app:
+    container_name: nestjs-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    ports:
+      - '3000:3000'
+    environment:
+      - DATABASE_URL=postgres://${DB_USERNAME}:${DB_PASSWORD}@postgres:5432/${DB_DATABASE}
+
+    networks:
+      - event_network
 volumes:
   postgres-db:
     driver: local
+networks:
+  event_network:
+    driver: bridge

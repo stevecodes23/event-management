@@ -11,7 +11,7 @@ import { BookingModule } from './modules/booking/booking.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(TYPEORM_CONFIG),
     AuthModule,
     VenueModule,
