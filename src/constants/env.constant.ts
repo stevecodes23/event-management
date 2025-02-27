@@ -28,4 +28,10 @@ export const ENV = {
   STRIPE: {
     KEY: getEnvVariable('STRIPE_KEY'),
   },
+  POSTMARK: {
+    API_KEY: getEnvVariable('POSTMARK_API_KEY'),
+  },
+  EMAIL:{
+    EMAIL_ID: getEnvVariable('EMAIL_ID'),
+  }
 };
