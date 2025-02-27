@@ -8,18 +8,25 @@ import { SignUpDto } from './dto/signup.dto';
 import { ENV } from 'src/constants/env.constant';
 import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { NotificationService } from '../notification/notification.service';
+import { MESSAGES } from 'src/constants/app.constant';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly notificationService: NotificationService,
   ) {}
   async create(signUpDto: SignUpDto) {
     try {
       signUpDto.password = await generateHash(signUpDto.password);
-      await this.userRepository.save(signUpDto);
-
+      const user = await this.userRepository.save(signUpDto);
+      await this.notificationService.createNotification(
+        user.id,
+        `Welcome ${signUpDto.name}`,
+        MESSAGES.WELCOME_MESSAGE,
+      );
       return {};
     } catch (error) {
       if (error.status)
