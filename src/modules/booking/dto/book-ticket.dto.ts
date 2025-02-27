@@ -8,7 +8,6 @@ export class BookTicketDto {
   @IsInt()
   @Min(1)
   quantity: number;
-
 }
 export class BookTicketWithPGDto {
   @IsInt()
