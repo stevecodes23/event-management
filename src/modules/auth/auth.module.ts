@@ -8,7 +8,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthenticationGuard } from 'src/gaurds/authentication.gaurd';
 import { RolesGuard } from 'src/gaurds/roles.gaurd';
-import { Venue } from '../venue/entities/veneu.entity';
+import { Venue } from '../venue/entities/venue.entity';
 import { NotificationService } from '../notification/notification.service';
 import { Notification } from '../notification/entities/notification.entity';
 

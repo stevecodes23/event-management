@@ -3,7 +3,7 @@ import { BookingController } from './booking.controller';
 import { BookingService } from './booking.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../auth/entities/user.entity';
-import { Venue } from '../venue/entities/veneu.entity';
+import { Venue } from '../venue/entities/venue.entity';
 import { Booking } from './entities/booking.entity';
 import { Event } from '../event/entities/event.entity';
 import { EventTicket } from '../event/entities/event-ticket.entity';

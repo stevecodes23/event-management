@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../auth/entities/user.entity';
-import { Venue } from './entities/veneu.entity';
+import { Venue } from './entities/venue.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import { CreateVenueDto, UpdateVenueDto } from './dto/veneu.dto';

@@ -1,4 +1,4 @@
-import { Venue } from 'src/modules/venue/entities/veneu.entity';
+import { Venue } from 'src/modules/venue/entities/venue.entity';
 import { Event } from 'src/modules/event/entities/event.entity';
 
 import { BaseEntity } from 'src/universal/base.entity';

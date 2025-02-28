@@ -1,7 +1,7 @@
 import { BaseEntity } from 'src/universal/base.entity';
 import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
 import { EventTicket } from './event-ticket.entity';
-import { Venue } from 'src/modules/venue/entities/veneu.entity';
+import { Venue } from 'src/modules/venue/entities/venue.entity';
 import { User } from 'src/modules/auth/entities/user.entity';
 
 @Entity()
