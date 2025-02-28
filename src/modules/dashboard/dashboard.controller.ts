@@ -12,4 +12,10 @@ export class DashboardController {
   async getUserList(): Promise<User[]> {
     return await this.dashboardService.getUserList();
   }
+  @ApiBearerAuth()
+  @Roles(UserRole.ADMIN)
+  @Get('events-info')
+  async getEventData(): Promise<any> {
+    return await this.dashboardService.getEventData();
+  }
 }
