@@ -1,10 +1,10 @@
-import { Venue } from 'src/modules/venue/entities/venue.entity';
-import { Event } from 'src/modules/event/entities/event.entity';
+import { Venue } from '../../venue/entities/venue.entity';
+import { Event } from '../../event/entities/event.entity';
 
-import { BaseEntity } from 'src/universal/base.entity';
+import { BaseEntity } from '../../../universal/base.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
-import { Booking } from 'src/modules/booking/entities/booking.entity';
-import { Notification } from 'src/modules/notification/entities/notification.entity';
+import { Booking } from '../../booking/entities/booking.entity';
+import { Notification } from '../../notification/entities/notification.entity';
 export enum UserRole {
   ADMIN = 'Admin',
   USER = 'User',

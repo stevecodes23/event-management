@@ -1,5 +1,5 @@
-import { User } from 'src/modules/auth/entities/user.entity';
-import { BaseEntity } from 'src/universal/base.entity';
+import { User } from '../../auth/entities/user.entity';
+import { BaseEntity } from '../../../universal/base.entity';
 import { Entity, Column, ManyToOne } from 'typeorm';
 
 @Entity()

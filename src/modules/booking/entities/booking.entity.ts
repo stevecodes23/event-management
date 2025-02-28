@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { User } from '../../auth/entities/user.entity';
 import { EventTicket } from '../../event/entities/event-ticket.entity';
-import { BaseEntity } from 'src/universal/base.entity';
+import { BaseEntity } from '../../../universal/base.entity';
 export enum PaymentStatus {
   PENDING = 'Pending',
   PAID = 'Paid',

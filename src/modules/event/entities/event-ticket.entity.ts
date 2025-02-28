@@ -6,7 +6,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Event } from './event.entity';
-import { Booking } from 'src/modules/booking/entities/booking.entity';
+import { Booking } from '../../booking/entities/booking.entity';
 
 export enum TicketType {
   VIP = 'VIP',
