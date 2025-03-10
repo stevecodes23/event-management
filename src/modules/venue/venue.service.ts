@@ -13,7 +13,7 @@ export class VenueService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-  async create(createVenueDto: CreateVenueDto, userId: number): Promise<Venue> {
+  async create(createVenueDto: CreateVenueDto, userId: number): Promise<any> {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) throw new NotFoundException(`User with ID ${userId} not found`);
 

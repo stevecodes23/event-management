@@ -87,69 +87,65 @@ export class EventService {
     return result;
   }
   async findAll() {
-    return await this.eventRepository.find({
-      where: {
-        deletedAt: IsNull(),
-      },
-      relations: ['venue', 'organiser'],
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        date: true,
-        startTime: true,
-        endTime: true,
-        venue: {
-          id: true,
-          address: true,
-          city: true,
-          state: true,
-          capacity: true,
-        },
-        organiser: {
-          name: true,
-        },
-        tickets: {
-          type: true,
-          price: true,
-          totalQuantity: true,
-          soldQuantity: true,
-          reservedQuantity: true,
-        },
-      },
-    });
+    return await this.eventRepository
+      .createQueryBuilder('event')
+      .leftJoinAndSelect('event.venue', 'venue')
+      .leftJoinAndSelect('event.organiser', 'organiser')
+      .leftJoinAndSelect('event.tickets', 'tickets')
+      .where('event.deletedAt IS NULL')
+      .select([
+        'event.id',
+        'event.title',
+        'event.description',
+        'event.date',
+        'event.startTime',
+        'event.endTime',
+        'venue.id',
+        'venue.name',
+        'venue.address',
+        'venue.city',
+        'venue.state',
+        'venue.capacity',
+        'organiser.id',
+        'organiser.name',
+        'tickets.type',
+        'tickets.price',
+        'tickets.totalQuantity',
+        'tickets.soldQuantity',
+        'tickets.reservedQuantity',
+      ])
+      .getMany();
   }
 
   async findOne(id: number) {
-    const event = await this.eventRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-      relations: ['venue', 'organiser'],
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        date: true,
-        startTime: true,
-        endTime: true,
-        venue: {
-          id: true,
-          address: true,
-          city: true,
-          state: true,
-          capacity: true,
-        },
-        organiser: {
-          name: true,
-        },
-        tickets: {
-          type: true,
-          price: true,
-          totalQuantity: true,
-          soldQuantity: true,
-          reservedQuantity: true,
-        },
-      },
-    });
+    const event = await this.eventRepository
+      .createQueryBuilder('event')
+      .leftJoinAndSelect('event.venue', 'venue')
+      .leftJoinAndSelect('event.organiser', 'organiser')
+      .leftJoinAndSelect('event.tickets', 'tickets')
+      .where('event.id = :id', { id })
+      .andWhere('event.deletedAt IS NULL')
+      .select([
+        'event.id',
+        'event.title',
+        'event.description',
+        'event.date',
+        'event.startTime',
+        'event.endTime',
+        'venue.id',
+        'venue.address',
+        'venue.city',
+        'venue.state',
+        'venue.capacity',
+        'organiser.id',
+        'organiser.name',
+        'tickets.type',
+        'tickets.price',
+        'tickets.totalQuantity',
+        'tickets.soldQuantity',
+        'tickets.reservedQuantity',
+      ])
+      .getOne();
     if (!event) throw new NotFoundException(`Event with ID ${id} not found`);
     return event;
   }
