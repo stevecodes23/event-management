@@ -15,4 +15,7 @@ export const dataSource = new DataSource({
   database: ENV.PSQL.DATABASE,
   entities: [User, Venue, Event, Notification, Booking, EventTicket],
   synchronize: false,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });

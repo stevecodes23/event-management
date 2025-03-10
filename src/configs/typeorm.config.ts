@@ -10,7 +10,7 @@ export const TYPEORM_CONFIG: TypeOrmModuleOptions = {
   database: ENV.PSQL.DATABASE,
   autoLoadEntities: true,
   synchronize: true,
-  // ssl: {
-  //   rejectUnauthorized: false,
-  // },
+  ssl: {
+    rejectUnauthorized: false,
+  },
 };
