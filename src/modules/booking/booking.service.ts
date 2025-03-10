@@ -176,7 +176,7 @@ export class BookingService {
 
     const templatePath = path.join(
       __dirname,
-      '../../../template/ticket-template.ejs',
+      '../../../src/template/ticket-template.ejs',
     );
     const html = await ejs.renderFile(templatePath, {
       booking,
