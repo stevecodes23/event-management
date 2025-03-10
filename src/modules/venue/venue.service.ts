@@ -21,17 +21,34 @@ export class VenueService {
       ...createVenueDto,
       addedBy: user,
     });
-    return await this.venueRepository.save(venue);
+    const { addedBy, ...savedVenue } = await this.venueRepository.save(venue);
+    return savedVenue;
   }
   async findAll(): Promise<Venue[]> {
     return await this.venueRepository.find({
       where: { deletedAt: IsNull() },
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        city: true,
+        state: true,
+        capacity: true,
+      },
     });
   }
 
   async findOne(id: number): Promise<Venue> {
     const venue = await this.venueRepository.findOne({
       where: { id, deletedAt: IsNull() },
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        city: true,
+        state: true,
+        capacity: true,
+      },
     });
     if (!venue) {
       throw new NotFoundException(`Venue with ID ${id} not found`);
