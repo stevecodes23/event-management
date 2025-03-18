@@ -1,4 +1,3 @@
-import { DataSource } from 'typeorm';
 import { User } from '../../modules/auth/entities/user.entity';
 import { UserRole } from '../../modules/auth/entities/user.entity';
 import { generateHash } from '../../utils/app.utils';

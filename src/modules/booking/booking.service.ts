@@ -53,8 +53,10 @@ export class BookingService {
       throw new BadRequestException('Not enough tickets available');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const totalAmount = ticket.price * quantity;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const saveBooking = await this.saveBookingData(
       ticket,
       PaymentStatus.PAID,
@@ -121,6 +123,7 @@ export class BookingService {
       throw new BadRequestException('Payment failed');
     }
     if (payment.paid) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const saveBooking = await this.saveBookingData(
         ticket,
         PaymentStatus.PAID,

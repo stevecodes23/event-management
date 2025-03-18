@@ -9,7 +9,7 @@ import { Venue } from '../venue/entities/venue.entity';
 import { User } from '../auth/entities/user.entity';
 import { EventTicket } from './entities/event-ticket.entity';
 import { Event } from './entities/event.entity';
-import { IsNull, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 
@@ -72,6 +72,7 @@ export class EventService {
     );
 
     await this.eventTicketRepository.save(tickets);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { organiser: _, ...result } = savedEvent;
     return result;
   }
@@ -83,6 +84,7 @@ export class EventService {
     }
     Object.assign(event, updateEventDto);
     const updated_event = await this.eventRepository.save(event);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { organiser: _, ...result } = updated_event;
     return result;
   }
@@ -162,6 +164,7 @@ export class EventService {
 
     event.deletedAt = new Date();
     const deleteEvent = await this.eventRepository.save(event);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { organiser: _, ...restOfDeletedEvent } = deleteEvent;
     return restOfDeletedEvent;
   }
