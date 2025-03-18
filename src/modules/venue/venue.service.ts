@@ -21,6 +21,7 @@ export class VenueService {
       ...createVenueDto,
       addedBy: user,
     });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { addedBy, ...savedVenue } = await this.venueRepository.save(venue);
     return savedVenue;
   }

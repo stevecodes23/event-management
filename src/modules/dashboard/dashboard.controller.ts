@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { User, UserRole } from '../auth/entities/user.entity';
 import { Roles } from 'src/decorator/roles.decorator';
